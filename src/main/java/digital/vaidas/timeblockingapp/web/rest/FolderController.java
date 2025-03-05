@@ -3,6 +3,7 @@ package digital.vaidas.timeblockingapp.web.rest;
 import digital.vaidas.timeblockingapp.model.Folder;
 import digital.vaidas.timeblockingapp.service.FolderService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,15 +20,15 @@ public class FolderController {
     }
 
     @PostMapping
-    public Folder createFolder(@AuthenticationPrincipal OAuth2User oAuth2User,
+    public Folder createFolder(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
                                @RequestParam String name) {
-        String userId = oAuth2User.getAttribute("sub");
+        String userId = principal.getAttribute("sub");
         return folderService.createFolder(userId, name);
     }
 
     @GetMapping
-    public List<Folder> getFolders(@AuthenticationPrincipal OAuth2User oAuth2User) {
-        String userId = oAuth2User.getAttribute("sub");
+    public List<Folder> getFolders(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
+        String userId = principal.getAttribute("sub");
         return folderService.getFoldersByUser(userId);
     }
 }

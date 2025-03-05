@@ -25,9 +25,4 @@ public class AuthController {
                 oAuth2User != null ? oAuth2User.getAttributes() : "null");
         return authService.processOAuth2User(oAuth2User);
     }
-
-    @GetMapping("/public/test")
-    public String test() {
-        return "Public endpoint works!";
-    }
 }

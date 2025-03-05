@@ -2,7 +2,6 @@ package digital.vaidas.timeblockingapp.web.rest;
 import digital.vaidas.timeblockingapp.model.Task;
 import digital.vaidas.timeblockingapp.service.TaskService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +21,14 @@ public class TaskController {
 
     @PostMapping
     public Task createTask(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
-                           @RequestBody TaskRequest taskRequest) {
+                           @RequestBody Task taskRequest) {
         System.out.println("Principal: " + principal);
         String userId = principal.getAttribute("sub");
+        System.out.println("User ID: " + userId);
         if (userId == null) {
             throw new IllegalStateException("User not authenticated");
         }
-        LocalDateTime start = LocalDateTime.parse(taskRequest.getStartTime());
-        LocalDateTime end = LocalDateTime.parse(taskRequest.getEndTime());
-        return taskService.createTask(userId, taskRequest.getTitle(), taskRequest.getDescription(),
-                start, end, taskRequest.getFolderId());
+        return taskService.createTask(userId, taskRequest);
     }
 
 
