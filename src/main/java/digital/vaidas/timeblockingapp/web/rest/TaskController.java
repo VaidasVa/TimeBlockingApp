@@ -5,7 +5,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -54,25 +53,4 @@ public class TaskController {
         String userId = principal.getAttribute("sub");
         return taskService.getTasksInFolder(userId, folderId);
     }
-}
-
-// DTO for JSON request
-class TaskRequest {
-    private String title;
-    private String description;
-    private String startTime;
-    private String endTime;
-    private Long folderId;
-
-    // Getters and setters
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getStartTime() { return startTime; }
-    public void setStartTime(String startTime) { this.startTime = startTime; }
-    public String getEndTime() { return endTime; }
-    public void setEndTime(String endTime) { this.endTime = endTime; }
-    public Long getFolderId() { return folderId; }
-    public void setFolderId(Long folderId) { this.folderId = folderId; }
 }
