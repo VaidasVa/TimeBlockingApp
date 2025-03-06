@@ -1,10 +1,13 @@
 package digital.vaidas.timeblockingapp.service;
 
+import digital.vaidas.timeblockingapp.mapper.FolderMapper;
 import digital.vaidas.timeblockingapp.model.Folder;
+import digital.vaidas.timeblockingapp.repository.DAO.FolderDAO;
 import digital.vaidas.timeblockingapp.repository.FolderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FolderService {
@@ -16,13 +19,11 @@ public class FolderService {
     }
 
     public Folder createFolder(String userId, String name) {
-        Folder folder = new Folder();
-        folder.setUserId(userId);
-        folder.setName(name);
-        return folderRepository.save(folder);
+        return FolderMapper.INSTANCE.toFolder(folderRepository.save(new FolderDAO(userId, name)));
     }
-
     public List<Folder> getFoldersByUser(String userId) {
-        return folderRepository.findByUserId(userId);
+        return folderRepository.findByUserId(userId).stream()
+                .map(FolderMapper.INSTANCE::toFolder)
+                .collect(Collectors.toList());
     }
 }
