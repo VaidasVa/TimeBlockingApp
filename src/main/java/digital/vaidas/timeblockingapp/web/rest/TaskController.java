@@ -1,8 +1,8 @@
 package digital.vaidas.timeblockingapp.web.rest;
 import digital.vaidas.timeblockingapp.model.Task;
 import digital.vaidas.timeblockingapp.service.TaskService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin("*")
 public class TaskController {
 
     private final TaskService taskService;
@@ -18,11 +19,14 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    String userId="110083170615415132009";
+
     @PostMapping
-    public Task createTask(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
+    public Task createTask(
+//            @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
                            @RequestBody Task taskRequest) {
-        System.out.println("Principal: " + principal);
-        String userId = principal.getAttribute("sub");
+//        System.out.println("Principal: " + principal);
+//        String userId = principal.getAttribute("sub");
         System.out.println("User ID: " + userId);
         if (userId == null) {
             throw new IllegalStateException("User not authenticated");
@@ -42,15 +46,18 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
-        String userId = principal.getAttribute("sub");
+    public List<Task> getTasks(
+//            @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal
+    ) {
+//        String userId = principal.getAttribute("sub");
         return taskService.getTasksByUser(userId);
     }
 
     @GetMapping("/folder/{folderId}")
-    public List<Task> getTasksInFolder(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
+    public List<Task> getTasksInFolder(
+//            @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal,
                                        @PathVariable Long folderId) {
-        String userId = principal.getAttribute("sub");
+//        String userId = principal.getAttribute("sub");
         return taskService.getTasksInFolder(userId, folderId);
     }
 }
